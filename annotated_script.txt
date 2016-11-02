@@ -1,0 +1,29 @@
+#change to the directory containing fastq files
+cd ~/EDAMAME_16S/Fastq
+
+#call the fastqc program (~FastQC/fastqc) and direct it to run on all files ending in fastq 
+#(*.fastq); output a message to user saying that fastqc is running
+echo "Running fastqc..."
+~/FastQC/fastqc *.fastq
+mkdir -p ~/EDAMAME_16S/results/fastqc
+
+#move all of the fastqc output files (zip and html) to a directory we already made to hold results; output
+#a message to the user that results are saving 
+echo "saving..."
+mv *.zip ~/EDAMAME_16S/results/fastqc/
+mv *.html ~/EDAMAME_16S/results/fastqc/
+
+#change to the directory holding the results
+cd ~/EDAMAME_16S/results/fastqc/
+
+#"for loop" to unzip the zipped results file; output a message to user that they're being unzipped
+echo "Unzipping..."
+for zip in *.zip
+do
+  unzip $zip
+done
+
+#concatenate all of the individual summary files into one big summary file; output to user that 
+#they're being saved
+echo "saving..."
+cat */summary.txt > ~/EDAMAME_16S/results/fastqc_summaries.txt
